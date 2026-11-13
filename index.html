@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>❤️</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;500;700;900&display=swap');
+
+:root {
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Vazirmatn', sans-serif;
+    background: radial-gradient(circle at center, #571b45, #200c2b, #100819);
+    color: white;
+}
+
+.stars {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+}
+
+.star {
+    position: absolute;
+    color: #ffd6e7;
+    animation: sparkle 3s infinite ease-in-out;
+}
+
+@keyframes sparkle {
+    0%,100% {opacity:.2; transform:scale(.7);}
+    50% {opacity:1; transform:scale(1.4);}
+}
+
+.container {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    width: 90%;
+    max-width: 450px;
+    padding: 35px 20px;
+    border: 1px solid #ffffff30;
+    border-radius: 30px;
+    background: #ffffff0d;
+    backdrop-filter: blur(12px);
+    box-shadow: 0 0 60px #ff3c8b25;
+    animation: appear 1.5s ease;
+}
+
+@keyframes appear {
+    from {opacity:0; transform:translateY(35px);}
+    to {opacity:1; transform:translateY(0);}
+}
+
+.heart {
+    font-size: 125px;
+    display: inline-block;
+    filter: drop-shadow(0 0 25px #ff1744);
+    animation: heartbeat 1.2s infinite;
+}
+
+.heart.happy {
+    animation-duration: .6s;
+}
+
+@keyframes heartbeat {
+    0%,100% {transform:scale(1);}
+    15% {transform:scale(1.2);}
+    30% {transform:scale(1);}
+    45% {transform:scale(1.15);}
+}
+
+h1 {
+    font-size: 32px;
+    color: #ff9ac4;
+    text-shadow: 0 0 20px #ff4f91;
+    margin-top: 12px;
+}
+
+.buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-top: 25px;
+    min-height: 60px;
+}
+
+button {
+    border: none;
+    border-radius: 30px;
+    color: white;
+    font-family: inherit;
+    cursor: pointer;
+    transition: .35s;
+}
+
+#yes {
+    font-size: 18px;
+    padding: .7em 1.9em;
+    background: linear-gradient(90deg,#ff3d81,#ff78a8);
+    box-shadow: 0 0 25px #ff3d8170;
+}
+
+#no {
+    font-size: 18px;
+    padding: .7em 1.9em;
+    background: #ffffff22;
+    border: 1px solid #ffffff40;
+}
+
+#no.gone {
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.floating {
+    position: fixed;
+    bottom: -40px;
+    animation: floatUp linear forwards;
+    pointer-events: none;
+    z-index: 1;
+}
+
+@keyframes floatUp {
+    to {
+        transform: translateY(-110vh) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .heart, .star { animation: none; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="stars" id="stars"></div>
+
+<div class="container">
+
+    <div class="heart" id="heart">🐶</div>
+
+    <h1>آیا جمال سگه؟</h1>
+
+    <div class="buttons">
+        <button id="yes">آره</button>
+        <button id="no">نه</button>
+    </div>
+
+</div>
+
+<script>
+const stars = document.getElementById("stars");
+const yes = document.getElementById("yes");
+const no = document.getElementById("no");
+const heart = document.getElementById("heart");
+
+for (let i = 0; i < 65; i++) {
+    let s = document.createElement("span");
+    s.className = "star";
+    s.innerHTML = "✦";
+    s.style.left = Math.random() * 100 + "%";
+    s.style.top = Math.random() * 100 + "%";
+    s.style.animationDelay = Math.random() * 3 + "s";
+    s.style.fontSize = (8 + Math.random() * 13) + "px";
+    stars.appendChild(s);
+}
+
+function createHeart(fast) {
+    let h = document.createElement("div");
+    h.className = "floating";
+    h.innerHTML = ["❤️","💗","💕","✨","🌸"][Math.floor(Math.random() * 5)];
+    h.style.left = Math.random() * 100 + "%";
+    h.style.fontSize = (15 + Math.random() * 25) + "px";
+    h.style.animationDuration = (fast ? 2 + Math.random() * 3 : 5 + Math.random() * 5) + "s";
+    document.body.appendChild(h);
+    setTimeout(() => h.remove(), 10000);
+}
+
+let interval = setInterval(createHeart, 450);
+
+// دکمه نه: هر بار که کلیک بشه، نه کوچیک‌تر و آره بزرگ‌تر می‌شه
+let clicks = 0;
+
+no.addEventListener("click", () => {
+    clicks++;
+    const yesSize = Math.min(18 + clicks * 7, 64);
+    const noSize = Math.max(18 - clicks * 3, 0);
+    yes.style.fontSize = yesSize + "px";
+    no.style.fontSize = noSize + "px";
+    if (noSize <= 4) {
+        no.classList.add("gone");
+    }
+});
+
+// دکمه آره
+yes.addEventListener("click", () => {
+    heart.classList.add("happy");
+    for (let i = 0; i < 40; i++) {
+        setTimeout(() => createHeart(true), i * 60);
+    }
+    clearInterval(interval);
+    interval = setInterval(() => createHeart(true), 200);
+});
+</script>
+
+</body>
+</html>
